@@ -9,6 +9,9 @@
         The site is hosted on GitLab Pages and the source code can be found at
         <a href="https://gitlab.com/clayadavis/dice.party">GitLab</a>.
       </p>
+      <p>
+        Die logo adapted from Dice by Magicon from the Noun Project.
+      </p>
     </div>
   </div>
 </template>
