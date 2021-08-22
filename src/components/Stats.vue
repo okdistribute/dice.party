@@ -1,33 +1,31 @@
 <template>
   <div class="stats">
-    <div class="row">
-      <form @submit.prevent="submitStat">
-        <label for="new-stat-name">Add stat</label>
-        <input
-          name="new-stat-name"
-          id="new-stat-name"
-          type="text"
-          v-model="newStatName"
-        />
-        <input
-          class="small tertiary"
-          type="submit"
-          value="+"
-          :disabled="submitDisabled"
-        />
-      </form>
-    </div>
     <div class="stat-grid">
-      <template class="stat-row" v-for="(stat, idx) in stats" :key="stat.name">
+      <template class="stat-row" v-for="(stat, idx) in stats" :key="idx">
         <button
           class="small secondary"
           @click="removeStat(idx)"
-          title="Remove stat"
+          title="Remove attribute"
         >
           &times;
         </button>
         <div class="stat-name-wrapper">
-          <span class="stat-name">{{ stat.name }}</span>
+          <input
+            v-if="stat.editing"
+            class="edit-stat-name"
+            type="text"
+            v-model="stat.name"
+            @blur="stopEditStat(stat)"
+            @keypress.enter="stopEditStat(stat)"
+          />
+          <span
+            v-else
+            class="stat-name"
+            :class="{ unnamed: !stat.name }"
+            @click="editStat(stat, $event)"
+          >
+            {{ stat.name || '&lt;no name&gt;' }}
+          </span>
         </div>
         <input
           class="stat-modifier"
@@ -36,10 +34,12 @@
           min="-5"
           max="5"
           v-model="stat.modifier"
-          @change="saveStats()"
         />
         <dice-bar :stat="stat" @roll="roll" />
       </template>
+      <button class="small tertiary" title="Add an attribute" @click="newStat">
+        +
+      </button>
     </div>
   </div>
 </template>
@@ -51,21 +51,24 @@ export default {
   emits: ['roll'],
   components: { DiceBar },
   data: () => ({
-    newStatName: '',
     stats: [],
   }),
-  computed: {
-    submitDisabled() { return !this.newStatName }
-  },
   methods: {
+    newStat() {
+      this.stats.push({
+        name: '',
+        modifier: 0,
+        editing: true,
+      })
+      setTimeout(() => {
+        document.querySelector('.edit-stat-name').focus()
+      }, 0)
+    },
     addStat(name, modifier) {
       this.stats.push({ name, modifier })
     },
     removeStat(index) {
       this.stats.splice(index, 1)
-    },
-    submitStat() {
-      this.stats.push({ name: this.newStatName, modifier: 0 })
     },
     loadStats() {
       const savedStats = JSON.parse(localStorage.getItem('stats'))
@@ -77,6 +80,18 @@ export default {
     saveStats() {
       console.debug('Save stats')
       localStorage.setItem('stats', JSON.stringify(this.stats))
+    },
+    editStat(stat, $event) {
+      console.log('edit', stat, $event)
+      stat.editing = true
+      const $parent = $event.target.parentElement
+      setTimeout(() => {
+        $parent.querySelector('.edit-stat-name').focus()
+      }, 0)
+    },
+    stopEditStat(stat) {
+      console.log('blur', stat)
+      delete stat.editing
     },
     roll(stat, diceSpec) {
       this.$emit('roll', stat, diceSpec)
@@ -120,5 +135,13 @@ export default {
 .stat-name {
   font-size: x-large;
   margin-right: 0.5em;
+}
+
+.edit-stat-name {
+  text-align: right;
+}
+
+.unnamed {
+  opacity: 0.4;
 }
 </style>
