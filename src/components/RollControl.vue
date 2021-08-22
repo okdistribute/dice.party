@@ -3,7 +3,14 @@
     <div class="stat-grid">
       <div class="char-name-wrapper">
         <label for="char-name">Character Name</label>
-        <input type="text" id="char-name" v-model="name" />
+        <input
+          type="text"
+          id="char-name"
+          ref="nameInput"
+          :class="{ danger: nameWarning }"
+          v-model="name"
+          @change="nameWarning = false"
+        />
       </div>
       <dice-bar @roll="roll" style="align-self: end" />
       <template class="stat-row" v-for="(stat, idx) in stats" :key="idx">
@@ -68,6 +75,7 @@ export default {
   components: { DiceBar },
   data: () => ({
     name: '',
+    nameWarning: false,
     stats: [],
   }),
   computed: {
@@ -123,7 +131,11 @@ export default {
       delete stat.editing
     },
     roll(stat, diceSpec) {
-      if (!this.name) return
+      if (!this.name) {
+        this.nameWarning = true
+        this.$refs.nameInput.focus()
+        return
+      }
       const data = {
         name: this.name,
         stat: stat?.name,
@@ -193,5 +205,14 @@ export default {
 .char-name-wrapper {
   grid-column: 1/4;
   margin-bottom: 4px;
+}
+
+.danger {
+  border-color: #dc3545;
+  background-color: pink;
+}
+
+button.small {
+  font-size: larger;
 }
 </style>
