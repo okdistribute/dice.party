@@ -59,6 +59,7 @@ export default {
 <style scoped>
 .jumbo {
   font-size: 60pt;
+  margin: 40px;
 }
 
 .row {

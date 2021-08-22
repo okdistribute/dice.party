@@ -1,8 +1,9 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <header id="nav">
+    <router-link to="/" class="logo">dice.party</router-link>
+    <router-link to="/" class="button">Home</router-link>
+    <router-link to="/about" class="button">About</router-link>
+  </header>
   <router-view/>
 </template>
 
@@ -10,12 +11,7 @@
 @import '../node_modules/mini.css/src/flavors/mini-default.scss';
 
 #nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
+  a.button {
     &.router-link-exact-active {
       color: #42b983;
     }
