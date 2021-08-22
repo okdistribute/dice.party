@@ -34,6 +34,7 @@ export default {
 <style scoped>
 .dicebar {
   display: inline-block;
+  margin: 8px;
 }
 
 button:first-child {
@@ -50,5 +51,9 @@ button:not(:last-child) {
 
 button:last-child {
   border-left: 1px solid darkblue;
+}
+
+button {
+  margin: 0;
 }
 </style>
