@@ -31,12 +31,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .dicebar {
   display: inline-block;
   margin: 8px;
 }
+</style>
 
+<style scoped>
 button:first-child {
   border-right: 1px solid darkblue;
 }

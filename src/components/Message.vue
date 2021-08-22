@@ -36,11 +36,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .message {
   line-height: 1.66;
 }
+</style>
 
+<style scoped>
 .stat-name {
   text-transform: uppercase;
 }

@@ -56,7 +56,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .jumbo {
   font-size: 60pt;
 }
@@ -69,11 +69,11 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+}
 
-  .grower {
-    flex-grow: 1;
-    text-align: center;
-  }
+.grower {
+  flex-grow: 1;
+  text-align: center;
 }
 
 .text {

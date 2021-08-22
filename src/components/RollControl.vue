@@ -1,5 +1,5 @@
 <template>
-  <div class="stats">
+  <div class="roll-control">
     <div class="stat-grid">
       <div class="char-name-wrapper">
         <label for="char-name">Character Name</label>
@@ -155,11 +155,13 @@ export default {
 }
 </script>
 
-<style scoped>
-.stats {
+<style>
+.roll-control {
   max-width: 28em;
 }
+</style>
 
+<style scoped>
 .stat-modifier {
   width: 4em;
 }
