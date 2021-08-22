@@ -80,10 +80,10 @@ export default {
   }),
   computed: {
     nameKey() {
-      return 'charName'
+      return `${this.slug}:charName`
     },
     statKey() {
-      return 'stats'
+      return `${this.slug}:stats`
     },
     messageUrl() {
       return `${this.$messageHost}/${this.slug}/messages`
