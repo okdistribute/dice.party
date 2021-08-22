@@ -3,11 +3,14 @@
     <label for="charName">Character Name</label>
     <input type="text" id="charName" v-model="name" />
     <dice-bar @roll="roll" />
+    <stats @roll="roll" />
   </div>
 </template>
 
 <script>
 import DiceBar from './DiceBar.vue'
+import Stats from './Stats.vue'
+
 function postJson(url, body) {
   if (typeof body === 'object') {
     body = JSON.stringify(body)
@@ -20,7 +23,7 @@ function postJson(url, body) {
 }
 
 export default {
-  components: { DiceBar },
+  components: { DiceBar, Stats },
   name: 'RollControl',
   props: ['slug'],
   data: () => ({
@@ -50,17 +53,9 @@ export default {
     name(val) {
       localStorage.setItem('charName', val)
     },
-    stats: {
-      /* Need the watcher for add/remove stats, @change for values */
-      deep: false,
-      handler() {
-        console.log('Set stats')
-        localStorage.setItem('stats', JSON.stringify(this.stats))
-      },
-    },
   },
   created() {
-    this.name = localStorage.getItem('charName')
+    this.name = localStorage.getItem('charName') || ''
   },
 }
 </script>

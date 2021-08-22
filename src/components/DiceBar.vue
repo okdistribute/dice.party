@@ -1,8 +1,22 @@
 <template>
   <div class="dicebar">
-    <button class="primary" @click="roll(stat, '3d6kl2')">&minus;</button>
-    <button class="primary" @click="roll(stat, '2d6')">2d6</button>
-    <button class="primary" @click="roll(stat, '3d6kh2')">+</button>
+    <button
+      class="primary"
+      @click="roll(stat, '3d6kl2')"
+      title="Roll 3 and take the LOWEST"
+    >
+      &minus;
+    </button>
+    <button class="primary" @click="roll(stat, '2d6')" title="Roll 2 dice">
+      2d6
+    </button>
+    <button
+      class="primary"
+      @click="roll(stat, '3d6kh2')"
+      title="Roll 3 and take the HIGHEST"
+    >
+      +
+    </button>
   </div>
 </template>
 
@@ -35,6 +49,6 @@ button:not(:last-child) {
 }
 
 button:last-child {
-    border-left: 1px solid darkblue;
+  border-left: 1px solid darkblue;
 }
 </style>
