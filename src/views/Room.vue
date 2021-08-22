@@ -2,10 +2,15 @@
   <div class="container">
     <h1 class="capitalize">{{ roomName }}</h1>
 
-    <roll-control :slug="slug" />
+    <div class="row">
+      <div class="col-md">
+        <roll-control :slug="slug" />
+      </div>
+      <div class="col-md">
+        <message-list :slug="slug"/>
+      </div>
+    </div>
 
-    <h2>Messages</h2>
-    <MessageList :slug="slug"/>
   </div>
 </template>
 
