@@ -45,12 +45,9 @@ export default {
   }),
   methods: {
     goToRoom() {
-      this.$router.push({
-        name: 'Room',
-        params: {
-          slug: slugify(this.roomName),
-        },
-      })
+      // This should intentionally not use the route name, so that
+      // e.g. "about" will just go to that page
+      this.$router.push(slugify(this.roomName))
     },
   },
 }
