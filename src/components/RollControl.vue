@@ -78,6 +78,12 @@
           />
         </svg>
       </button>
+      <div
+        class="card fluid add-info responsive-padding"
+        v-show="!stats.length"
+      >
+        &#8592; Click to add character stats
+      </div>
     </div>
   </div>
 </template>
@@ -241,5 +247,11 @@ export default {
 button.small {
   width: 2.6em;
   padding-bottom: 0;
+}
+
+.add-info {
+  grid-column: 2 / 5;
+  opacity: 0.6;
+  border: none;
 }
 </style>
