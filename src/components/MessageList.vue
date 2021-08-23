@@ -1,13 +1,18 @@
 <template>
   <div class="messages">
+    <div
+      v-if="!eventSourceReady || eventSourceError"
+      class="spinner primary"
+      title="Connecting to server..."
+    ></div>
+    <div v-if="eventSourceReady && !messageList.length">
+      No dice rolls yet. Be the first!
+    </div>
     <Message
       v-for="message in messageList"
       :key="message.id"
       :message="message"
     />
-    <div v-if="!messageList.length">
-      No dice rolls yet. Be the first!
-    </div>
   </div>
 </template>
 
@@ -23,6 +28,8 @@ export default {
   data: () => ({
     messageList: [],
     eventSource: undefined,
+    eventSourceReady: false,
+    eventSourceError: undefined,
   }),
   computed: {
     messageUrl() {
@@ -36,8 +43,16 @@ export default {
       }
     },
     initEventStream() {
-      console.debug('Init', this.messageUrl)
+      console.debug('Opening eventSource from', this.messageUrl)
       this.eventSource = new EventSource(this.messageUrl)
+      this.eventSource.addEventListener('open', (e) => {
+        console.log('EventSource open', e.target)
+        this.eventSourceReady = true
+      })
+      this.eventSource.addEventListener('error', (e) => {
+        console.error('EventSource error', e)
+        this.eventSourceError = e
+      })
       this.eventSource.addEventListener('message', this.messageEventHandler)
     },
     messageEventHandler(event) {
@@ -52,7 +67,7 @@ export default {
   beforeUnmount() {
     console.debug('Close eventSource')
     this.eventSource.close()
-  }
+  },
 }
 </script>
 
