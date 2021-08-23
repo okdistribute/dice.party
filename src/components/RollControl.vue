@@ -37,7 +37,7 @@
         <div class="stat-name-wrapper">
           <input
             v-if="stat.editing"
-            class="edit-stat-name"
+            class="stat-name-input"
             type="text"
             v-model="stat.name"
             @blur="stopEditStat(stat)"
@@ -129,7 +129,7 @@ export default {
         editing: true,
       })
       setTimeout(() => {
-        document.querySelector('.edit-stat-name').focus()
+        document.querySelector('.stat-name-input').focus()
       }, 0)
     },
     addStat(name, modifier) {
@@ -155,7 +155,7 @@ export default {
       stat.editing = true
       const $parent = $event.target.parentElement
       setTimeout(() => {
-        $parent.querySelector('.edit-stat-name').focus()
+        $parent.querySelector('.stat-name-input').focus()
       }, 0)
     },
     stopEditStat(stat) {
@@ -226,8 +226,9 @@ export default {
   margin-right: 0.5em;
 }
 
-.edit-stat-name {
+.stat-name-input {
   text-align: right;
+  width: 100%;
 }
 
 .unnamed {
