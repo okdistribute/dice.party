@@ -9,9 +9,9 @@
     "deploy": "rsync -azvh dist/ dice.party:/var/www/dice.party/"
   },
   "dependencies": {
-    "localred": "file:../adb",
     "core-js": "^3.6.5",
     "dice-roller-parser": "^0.1.8",
+    "localred": "^1.0.1",
     "mini.css": "^3.0.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
