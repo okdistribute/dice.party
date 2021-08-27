@@ -5,6 +5,11 @@
 npm install
 ```
 
+### Run relay in the background
+```
+npm run relay
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
