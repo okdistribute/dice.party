@@ -9,10 +9,13 @@
     "deploy": "rsync -azvh dist/ dice.party:/var/www/dice.party/"
   },
   "dependencies": {
+    "localred": "file:../adb",
     "core-js": "^3.6.5",
+    "dice-roller-parser": "^0.1.8",
     "mini.css": "^3.0.1",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -38,7 +41,8 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {},
+    "overrides": []
   },
   "browserslist": [
     "> 1%",

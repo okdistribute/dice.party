@@ -18,6 +18,9 @@
 
 <script>
 import Message from '@/components/Message.vue'
+import LocalRed from 'localred'
+
+let red = LocalRed()
 
 export default {
   name: 'MessageList',
@@ -31,34 +34,31 @@ export default {
     eventSourceReady: false,
     eventSourceError: undefined,
   }),
-  computed: {
-    messageUrl() {
-      return `${this.$messageHost}/${this.slug}/messages`
-    },
-  },
+  computed: {},
   methods: {
     addMessage(msg) {
-      if (!this.messageList.some((d) => d.id == msg.id)) {
-        this.messageList.unshift(msg)
+      let parsed = JSON.parse(msg)
+      if (!this.messageList.some((d) => d.id == parsed.id)) {
+          console.log('adding message', parsed)
+        this.messageList.unshift(parsed)
       }
     },
     initEventStream() {
-      console.debug('Opening eventSource from', this.messageUrl)
-      this.eventSource = new EventSource(this.messageUrl)
-      this.eventSource.addEventListener('open', (e) => {
-        console.log('EventSource open', e.target)
-        this.eventSourceReady = true
-      })
-      this.eventSource.addEventListener('error', (e) => {
-        console.error('EventSource error', e)
-        this.eventSourceError = e
-      })
-      this.eventSource.addEventListener('message', this.messageEventHandler)
-    },
-    messageEventHandler(event) {
-      const message = JSON.parse(event.data)
-      console.debug('Message', message)
-      this.addMessage(message)
+      console.debug('Opening eventSource from', this.slug)
+      red.load(this.slug).then(() => {
+        let messages = red.lrange(this.slug, 0, 20)
+        messages.forEach(this.addMessage)
+        this.eventSource = red.watch(this.slug)
+        this.eventSource.on('open', () => {
+            console.log('EventSource open')
+            this.eventSourceReady = true
+        })
+        this.eventSource.on('error', (e) => {
+            console.error('EventSource error', e)
+            this.eventSourceError = e
+        })
+        this.eventSource.on('message', this.addMessage)
+       })
     },
   },
   created() {
@@ -66,7 +66,7 @@ export default {
   },
   beforeUnmount() {
     console.debug('Close eventSource')
-    this.eventSource.close()
+    red.close(this.slug)
   },
 }
 </script>

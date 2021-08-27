@@ -89,18 +89,21 @@
 </template>
 
 <script>
+import { DiceRoller }  from 'dice-roller-parser'
 import DiceBar from './DiceBar.vue'
+import LocalRed from 'localred'
 
-function postJson(url, body) {
-  if (typeof body === 'object') {
-    body = JSON.stringify(body)
-  }
-  return fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body,
-  })
+let red = LocalRed()
+
+const diceRoller = new DiceRoller()
+
+function roll(diceSpec) {
+  const roll = diceRoller.roll(diceSpec)
+  let dice = (roll.rolls || roll.dice[0].rolls)
+  dice = dice.map(die => die.valid ? die.value : -die.value)
+  return {dice, value: roll.value}
 }
+
 
 export default {
   props: ['slug'],
@@ -116,10 +119,7 @@ export default {
     },
     statKey() {
       return `${this.slug}:stats`
-    },
-    messageUrl() {
-      return `${this.$messageHost}/${this.slug}/messages`
-    },
+    }
   },
   methods: {
     newStat() {
@@ -171,13 +171,13 @@ export default {
       const data = {
         name: this.name,
         stat: stat?.name,
-        roll: diceSpec,
+        result: roll(diceSpec),
+        id: Date.now()
       }
       if (stat?.modifier) {
         data.modifier = Number(stat.modifier)
       }
-      console.debug('Sending', data)
-      postJson(this.messageUrl, data)
+      red.lpush(this.slug, JSON.stringify(data))
     },
   },
   created() {
